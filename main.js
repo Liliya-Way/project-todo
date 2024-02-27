@@ -45,6 +45,13 @@
         return list;
     }
 
+    function createTodoItem(name) {
+        let item = document.createElement('li');
+        //кнопки помещаем в элемент, который красиво покажет их в одной группе
+        let buttonGroup = document.createElement('div');
+        
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
      let container = document.getElementById('todo-app');
      
