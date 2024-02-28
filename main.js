@@ -60,7 +60,7 @@
 
     buttonGroup.classList.add('btn-group', 'btn-group-sm');
     doneButton.classList.add('btn', 'btn-success');
-    dondeButton.textContent = 'Готово';
+    doneButton.textContent = 'Готово';
     deleteButton.classList.add('btn', 'btn-danger');
     deleteButton.textContent = 'Удалить';
 
@@ -88,12 +88,35 @@
      container.append(todoItemForm.form);
      container.append(todoList);
 
-     //бразер создает событие submit на форме по нажатию на Enter или на кнопку создания дела
+     //браузер создает событие submit на форме по нажатию на Enter или на кнопку создания дела
      todoItemForm.form.addEventListener('submit', function(e) {
         //эта строчка необходима, чтобы предотвратить стандартное действие браузера
         //в данном случае мы не хотим, чтобы страница перезагружалась при отправке формы 
         e.preventDefault();
-     })
+
+        //игнорируем создание  элемента, если пользователь ничего не ввел в поле
+        if (!todoItemForm.input.value) {
+            return;
+        }
+
+        let todoItem = createTodoItem (todoItemForm.input.value);
+
+        //добавляем обработчики на кнопки
+        todoItem.doneButton.addEventListener('click', function() {
+            todoItem.item.classList.toggle('list-group-item-success');
+        });
+        todoItem.deleteButton.addEventListener('click', function () {
+            if (confirm('Вы уверены?')) {
+                todoItem.item.remove();
+            }
+        });
+
+        //создаем и добавляем в список новое дело с названием из поля для ввода
+        todoList.append(todoItem.item);
+
+        //обнуляем значение в поле, чтобы не пришлось стирать его вручную
+        todoItemForm.input.value = '';
+     });
     });
 
 }) ();
