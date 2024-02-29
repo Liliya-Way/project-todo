@@ -77,46 +77,47 @@
     };
 };
 
-    document.addEventListener('DOMContentLoaded', function() {
-     let container = document.getElementById('todo-app');
-     
-     let todoAppTitle = createAppTitle('Список дел');
-     let todoItemForm = createTodoItemForm();
-     let todoList = createTodoList();
-   
-     container.append(todoAppTitle);
-     container.append(todoItemForm.form);
-     container.append(todoList);
 
-     //браузер создает событие submit на форме по нажатию на Enter или на кнопку создания дела
-     todoItemForm.form.addEventListener('submit', function(e) {
-        //эта строчка необходима, чтобы предотвратить стандартное действие браузера
-        //в данном случае мы не хотим, чтобы страница перезагружалась при отправке формы 
-        e.preventDefault();
+function createTodoApp(container, title = 'Список дел') {
+    let todoAppTitle = createAppTitle(title);
+    let todoItemForm = createTodoItemForm();
+    let todoList = createTodoList();
+  
+    container.append(todoAppTitle);
+    container.append(todoItemForm.form);
+    container.append(todoList);
 
-        //игнорируем создание  элемента, если пользователь ничего не ввел в поле
-        if (!todoItemForm.input.value) {
-            return;
-        }
+    //браузер создает событие submit на форме по нажатию на Enter или на кнопку создания дела
+    todoItemForm.form.addEventListener('submit', function(e) {
+       //эта строчка необходима, чтобы предотвратить стандартное действие браузера
+       //в данном случае мы не хотим, чтобы страница перезагружалась при отправке формы 
+       e.preventDefault();
 
-        let todoItem = createTodoItem (todoItemForm.input.value);
+       //игнорируем создание  элемента, если пользователь ничего не ввел в поле
+       if (!todoItemForm.input.value) {
+           return;
+       }
 
-        //добавляем обработчики на кнопки
-        todoItem.doneButton.addEventListener('click', function() {
-            todoItem.item.classList.toggle('list-group-item-success');
-        });
-        todoItem.deleteButton.addEventListener('click', function () {
-            if (confirm('Вы уверены?')) {
-                todoItem.item.remove();
-            }
-        });
+       let todoItem = createTodoItem (todoItemForm.input.value);
 
-        //создаем и добавляем в список новое дело с названием из поля для ввода
-        todoList.append(todoItem.item);
+       //добавляем обработчики на кнопки
+       todoItem.doneButton.addEventListener('click', function() {
+           todoItem.item.classList.toggle('list-group-item-success');
+       });
+       todoItem.deleteButton.addEventListener('click', function () {
+           if (confirm('Вы уверены?')) {
+               todoItem.item.remove();
+           }
+       });
 
-        //обнуляем значение в поле, чтобы не пришлось стирать его вручную
-        todoItemForm.input.value = '';
-     });
+       //создаем и добавляем в список новое дело с названием из поля для ввода
+       todoList.append(todoItem.item);
+
+       //обнуляем значение в поле, чтобы не пришлось стирать его вручную
+       todoItemForm.input.value = '';
     });
+}
+
+window.createTodoApp = createTodoApp;
 
 }) ();
